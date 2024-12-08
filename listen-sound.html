@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StethoSmart - Listen Sound and Phonocardiograph</title>
+  <link rel="stylesheet" href="listen-sound.css"> <!-- Link to external CSS -->
+  <script src="listen-sound.js" defer></script> <!-- Link to external JavaScript file -->
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="listen-sound.html">Real-Time Sound and Phonocardiograph</a></li>
+      <li><a href="recording.html">Record Heart Sound</a></li>
+      <li><a href="diagnosis.html">Diagnosis</a></li>
+      <li><a href="telemedicine.html">Telemedicine</a></li>
+    </ul>
+  </nav>
+
+  <!-- First Division: Sound Relay -->
+  <div class="division">
+    <h1>Listen to Real-Time Sounds</h1>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+    <p id="statusText"></p> <!-- This will show the "Sound Relaying Ongoing" text when started -->
+  </div>
+
+  <!-- Second Division: Phonocardiograph -->
+  <div class="division">
+    <h1>Phonocardiograph</h1>
+    <button id="startGraphBtn">Start</button>
+    <button id="stopGraphBtn">Stop</button>
+    <div id="graphContainer">
+      <!-- Placeholder for the graph -->
+      <p>Graph will be displayed here</p>
+    </div>
+  </div>
+
+</body>
+</html>

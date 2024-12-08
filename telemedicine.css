@@ -1,0 +1,124 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Navigation Bar Styles */
+nav {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 8px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #575757;
+}
+
+nav ul li a:active {
+    background-color: #3e8e41;
+}
+
+/* Telemedicine Division Styles */
+.division {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 30px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    width: 80%;
+    max-width: 800px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Sender Section Styles */
+.sender {
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.sender button {
+    padding: 12px 25px;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.sender button:hover {
+    background-color: #45a049;
+}
+
+.sender button:active {
+    background-color: #3e8e41;
+}
+
+/* Viewer Section Styles */
+.viewer {
+    margin-top: 30px;
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.viewer p {
+    font-size: 18px;
+    color: #f44336; /* Red color indicating ongoing work */
+}
+
+/* Status Message Styles */
+#senderStatusMessage {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #4CAF50; /* Green color for success message */
+}
+
+#viewerStatusMessage {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #ff9800; /* Orange color for ongoing work */
+}
