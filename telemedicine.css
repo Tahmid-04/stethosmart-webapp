@@ -19,6 +19,7 @@ nav ul {
     margin: 0;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;  /* Allows links to wrap on smaller screens */
 }
 
 nav ul li {
@@ -41,6 +42,17 @@ nav ul li a:hover {
 
 nav ul li a:active {
     background-color: #3e8e41;
+}
+
+/* Responsive Navigation Styles for Small Screens */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column; /* Stack links vertically */
+    }
+    nav ul li {
+        width: 100%; /* Make each link take full width */
+        text-align: center;
+    }
 }
 
 /* Telemedicine Division Styles */
