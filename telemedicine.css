@@ -122,3 +122,32 @@ h1 {
     font-size: 16px;
     color: #ff9800; /* Orange color for ongoing work */
 }
+
+/* Mobile View: Telemedicine Division */
+@media (max-width: 600px) {
+    .division {
+        width: 90%; /* Increase width for mobile view */
+        padding: 15px; /* Reduce padding */
+    }
+
+    h1 {
+        font-size: 20px; /* Adjust heading size for mobile */
+    }
+
+    .sender, .viewer {
+        width: 100%; /* Make sections take full width on mobile */
+    }
+
+    .sender button, .viewer button {
+        font-size: 14px; /* Adjust button size */
+        padding: 10px 20px; /* Adjust padding */
+    }
+
+    .viewer p {
+        font-size: 16px; /* Adjust font size for ongoing message */
+    }
+
+    #senderStatusMessage, #viewerStatusMessage {
+        font-size: 14px; /* Adjust font size for status messages */
+    }
+}

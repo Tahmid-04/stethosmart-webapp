@@ -35,6 +35,23 @@ nav ul li a {
     transition: background-color 0.3s ease;
 }
 
+/* Mobile View: Adjust for smaller screens */
+@media (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Stack links vertically */
+    }
+
+    nav ul li {
+        width: 100%; /* Make each item take up full width */
+        text-align: center;
+    }
+
+    nav ul li a {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
 nav ul li a:hover {
     background-color: #575757;
 }
@@ -63,6 +80,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Button Styles */
 button {
     padding: 12px 25px;
     font-size: 16px;
@@ -75,6 +93,7 @@ button {
     transition: background-color 0.3s ease;
 }
 
+/* Button Hover Effects */
 button:hover {
     background-color: #45a049;
 }
@@ -88,4 +107,25 @@ button:active {
     margin-top: 20px;
     font-size: 18px;
     color: #333;
+}
+
+/* Mobile View: Diagnosis Division */
+@media (max-width: 600px) {
+    .division {
+        width: 90%; /* Increase width for mobile view */
+        padding: 15px; /* Reduce padding */
+    }
+    
+    h1 {
+        font-size: 20px; /* Adjust heading size for mobile */
+    }
+
+    button {
+        font-size: 14px; /* Adjust button size */
+        padding: 10px 20px; /* Adjust padding */
+    }
+
+    #statusMessage {
+        font-size: 16px; /* Adjust font size for status message */
+    }
 }
