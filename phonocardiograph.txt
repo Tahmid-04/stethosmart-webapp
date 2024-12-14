@@ -1,0 +1,104 @@
+// Variables
+let audioContext;
+let recorder;
+let audioArray = [];
+let recording = false;
+let windowLength = 88200; // 2 seconds of data (44100 Hz * 2)
+let bufferLength = 2048; // Size of each audio buffer
+
+// Button Elements for Phonocardiograph
+const startGraphBtn = document.getElementById('startGraphBtn');
+const stopGraphBtn = document.getElementById('stopGraphBtn');
+const graphContainer = document.getElementById('graphContainer');
+
+// Event Listeners
+startGraphBtn.addEventListener('click', startGraph);
+stopGraphBtn.addEventListener('click', stopGraph);
+
+// Function to start graphing
+async function startGraph() {
+    startGraphBtn.disabled = true;
+    stopGraphBtn.disabled = false;
+    audioArray = []; // Reset the array before starting
+
+    // Initialize AudioContext
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Set up audio input and create recorder
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+    recorder = audioContext.createScriptProcessor(bufferLength, 1, 1);
+
+    // Connect the media source to the recorder
+    mediaStreamSource.connect(recorder);
+    recorder.connect(audioContext.destination);
+
+    // Set up the recorder to capture audio data
+    recorder.onaudioprocess = function (event) {
+        if (recording) {
+            const inputData = event.inputBuffer.getChannelData(0);
+            audioArray.push(...inputData);
+
+            // Keep only the most recent 2 seconds (88200 samples)
+            if (audioArray.length > windowLength) {
+                audioArray.splice(0, audioArray.length - windowLength); // Remove older data
+            }
+
+            // Plot the audio waveform
+            plotWaveform(audioArray);
+        }
+    };
+
+    // Start recording
+    recording = true;
+
+    // Clear the graph container text and prepare it for the graph
+    graphContainer.innerHTML = '';
+}
+
+// Function to stop graphing
+function stopGraph() {
+    recording = false;
+    stopGraphBtn.disabled = true;
+    startGraphBtn.disabled = false;
+
+    // Stop recording and reset the graph container
+    if (recorder) recorder.disconnect();
+    if (audioContext) audioContext.close();
+    graphContainer.innerHTML = '<p>Graph will be displayed here</p>';
+}
+
+// Function to plot the waveform
+function plotWaveform(audioData) {
+    // Normalize the audio data
+    const normalizedData = normalizeAudioData(audioData);
+
+    // Plot only the last windowLength points (2 seconds of audio data)
+    const dataToPlot = normalizedData.slice(Math.max(normalizedData.length - windowLength, 0));
+
+    const trace = {
+        x: Array.from({ length: dataToPlot.length }, (_, i) => i / audioContext.sampleRate),
+        y: dataToPlot,
+        type: 'scatter',
+        mode: 'lines',
+        line: { color: 'rgb(0, 0, 255)' }
+    };
+
+    const layout = {
+        title: 'Phonocardiograph',
+        xaxis: { title: 'Time (seconds)', range: [0, 2] },
+        yaxis: { title: 'Amplitude', range: [-1, 1] },
+        margin: { l: 40, r: 20, t: 30, b: 40 },
+        height: 300,
+        width: graphContainer.clientWidth,
+    };
+
+    Plotly.newPlot(graphContainer, [trace], layout);
+}
+
+// Function to normalize audio data
+function normalizeAudioData(audioData) {
+    const max = Math.max(...audioData);
+    const min = Math.min(...audioData);
+    return audioData.map(value => (value - min) / (max - min) * 2 - 1); // Normalize to range [-1, 1]
+}

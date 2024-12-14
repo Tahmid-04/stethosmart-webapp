@@ -1,0 +1,105 @@
+// HTML elements
+const classifyBtn = document.getElementById('classifyBtn');
+const statusMessage = document.getElementById('statusMessage');
+
+// Global variables
+let audioContext;
+let recorder;
+let audioArray = [];
+let recording = false;
+let windowLength = 88200; // 5 seconds of audio data at 44,100 Hz
+let bufferLength = 2048; // Size of each audio buffer
+let model;
+
+// Load the model (make sure you have the converted model in the correct directory)
+async function loadModel() {
+    model = await tf.loadLayersModel('path/to/tfjs_model/model.json');
+    console.log('Model loaded successfully!');
+}
+
+// Start recording when the button is clicked
+classifyBtn.addEventListener('click', async () => {
+    // Check if model is loaded
+    if (!model) {
+        statusMessage.textContent = "Model is loading... Please wait.";
+        return;
+    }
+
+    statusMessage.textContent = "Recording...";
+
+    await startRecording();
+
+    setTimeout(async () => {
+        // Stop recording after 5 seconds
+        stopRecording();
+
+        statusMessage.textContent = "Classifying sound...";
+
+        // Process the audio and classify
+        const spectrogram = await generateSpectrogram(audioArray);
+        const prediction = await classifySound(spectrogram);
+
+        // Display the result
+        statusMessage.textContent = prediction === 0 ? 'Normal Heart Sound' : 'Abnormal Heart Sound';
+    }, 5000); // 5 seconds of recording
+});
+
+// Function to start recording
+async function startRecording() {
+    // Initialize AudioContext
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Get user's microphone input
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+
+    // Create a script processor to capture audio data
+    recorder = audioContext.createScriptProcessor(bufferLength, 1, 1);
+
+    // Connect the audio source to the recorder
+    mediaStreamSource.connect(recorder);
+    recorder.connect(audioContext.destination);
+
+    recorder.onaudioprocess = function (event) {
+        if (recording) {
+            const inputData = event.inputBuffer.getChannelData(0);
+            audioArray.push(...inputData);
+
+            // Keep only the most recent 5 seconds of data
+            if (audioArray.length > windowLength) {
+                audioArray.splice(0, audioArray.length - windowLength);
+            }
+        }
+    };
+
+    recording = true;
+}
+
+// Function to stop recording
+function stopRecording() {
+    recording = false;
+    console.log('Recording stopped.');
+}
+
+// Convert audio data to spectrogram (simple example, more complex versions can use libraries like tensorflow.js or custom FFT)
+async function generateSpectrogram(audioData) {
+    // Here you would convert the raw audio data into a spectrogram.
+    // This is just a placeholder for simplicity, and you should implement an actual spectrogram generation.
+    
+    // Example: Create a dummy spectrogram (replace this with actual processing)
+    const dummySpectrogram = new Array(224).fill(0).map(() => new Array(224).fill(Math.random()));
+    
+    // Convert to a Tensor
+    const spectrogramTensor = tf.tensor(dummySpectrogram).expandDims(0).expandDims(-1);  // [1, 224, 224, 1]
+    return spectrogramTensor;
+}
+
+// Function to classify the sound using the model
+async function classifySound(spectrogram) {
+    const prediction = await model.predict(spectrogram).data();
+    const result = prediction[0] > 0.5 ? 1 : 0;  // Binary classification (0 or 1)
+    return result;
+}
+
+// Load the model when the page is loaded
+loadModel();
